@@ -91,7 +91,7 @@ class syntax_plugin_box2 extends DokuWiki_Syntax_Plugin {
 
             case DOKU_LEXER_UNMATCHED:
                 if ($this->title_mode) {
-                    return array('data', $match, $pos);
+                    return array('title', $match, $pos);
                 }
 
                 $handler->_addCall('cdata',array($match), $pos);
@@ -134,6 +134,7 @@ class syntax_plugin_box2 extends DokuWiki_Syntax_Plugin {
                     }
                     break;
 
+                case 'title':
                 case 'data' :
                     $output = $renderer->_xmlEntities($data);
 
