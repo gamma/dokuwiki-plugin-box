@@ -19,7 +19,7 @@ class action_plugin_box2 extends DokuWiki_Action_Plugin {
         $controller->register_hook('ACTION_SHOW_REDIRECT', 'BEFORE', $this, 'act_box_redirect_execute');
     }
 
-    function act_box_redirect_execute( &$event ) {
+    function act_box_redirect_execute( Doku_Event &$event ) {
         global $PRE;
         global $TEXT;
 
