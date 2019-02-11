@@ -255,7 +255,7 @@ class syntax_plugin_box2 extends DokuWiki_Syntax_Plugin {
     }
 
     function _xhtml_boxopen($renderer, $pos, $styles) {
-        $class = 'class="box' . (isset($styles['class']) ? ' '.$styles['class'] : '') . (method_exists($renderer, "startSectionEdit") ? " " . $renderer->startSectionEdit($pos, 'section', 'box-' . $pos) : "") . '"';
+        $class = 'class="box' . (isset($styles['class']) ? ' '.$styles['class'] : '') . (method_exists($renderer, "startSectionEdit") ? " " . $renderer->startSectionEdit($pos, array( 'target' => 'section', 'name' => 'box-' . $pos)) : "") . '"';
         $style = isset($styles['width']) ? "width: {$styles['width']};" : '';
         $style .= isset($styles['spacing']) ? implode(';', $styles['spacing']) : '';
 
