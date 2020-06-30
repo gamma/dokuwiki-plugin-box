@@ -130,7 +130,11 @@ class syntax_plugin_box2 extends DokuWiki_Syntax_Plugin {
                         $this->title_mode = false;
                         $renderer->doc .= "</h2>\n<div class=\"box_content\"" . $this->_content_colours . '>';
                     } else {
-                        $renderer->doc .= $this->_xhtml_boxopen($renderer, $pos, $data) . '<div class="box_content"' . $this->_content_colours . '>';
+                        $renderer->doc .= $this->_xhtml_boxopen($renderer, $pos, $data);
+                        
+                        if ( strlen( $this->_content_colours ) > 0 ) {
+							$renderer->doc .= '<div class="box_content"' . $this->_content_colours . '>';
+						}
                     }
                     break;
 
@@ -148,7 +152,9 @@ class syntax_plugin_box2 extends DokuWiki_Syntax_Plugin {
                     break;
 
                 case 'box_close' :
-                    $renderer->doc .= "</div>\n";
+					if ( strlen( $this->_content_colours ) > 0 ) {
+	                    $renderer->doc .= "</div>\n";
+					}
 
                     if ($data) {
                         $renderer->doc .= '<p class="box_caption"' . $this->_title_colours . '>' . $renderer->_xmlEntities($data) . "</p>\n";
