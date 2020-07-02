@@ -196,6 +196,11 @@ class syntax_plugin_box2 extends DokuWiki_Syntax_Plugin {
                 continue;
             }
             
+            if (preg_match('/^#[A-Za-z0-9_-]+$/', $token)) {
+                $styles['id'] = substr($token, 1);
+                continue;
+            }
+            
             if ( preg_match('/^(margin|padding)(-(left|right|top|bottom))?:\d+(%|px|em|ex|pt|cm|mm|pi|in)$/', $token)) {
                 $styles['spacing'][] = $token;
             }
@@ -278,6 +283,9 @@ class syntax_plugin_box2 extends DokuWiki_Syntax_Plugin {
         }
 
         if (strlen($style)) $style = ' style="'.$style.'"';
+        if (array_key_exists('id', $styles)) {
+            $class = 'id="' . $styles['id'] . '" ' . $class;
+        }
 
         $this->_xb_colours[] = $colours;
 
