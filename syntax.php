@@ -30,6 +30,7 @@ require_once(DOKU_PLUGIN.'syntax.php');
 class syntax_plugin_box2 extends DokuWiki_Syntax_Plugin {
 
     var $title_mode = false;
+    var $box_content = false;
 
     // the following are used in rendering and are set by _xhtml_boxopen()
     var $_xb_colours      = array();
@@ -128,11 +129,13 @@ class syntax_plugin_box2 extends DokuWiki_Syntax_Plugin {
                 case 'box_open' :
                     if ($this->title_mode) {
                         $this->title_mode = false;
+                        $this->box_content = true;
                         $renderer->doc .= "</h2>\n<div class=\"box_content\"" . $this->_content_colours . '>';
                     } else {
                         $renderer->doc .= $this->_xhtml_boxopen($renderer, $pos, $data);
                         
                         if ( strlen( $this->_content_colours ) > 0 ) {
+	                        $this->box_content = true;
 							$renderer->doc .= '<div class="box_content"' . $this->_content_colours . '>';
 						}
                     }
@@ -152,7 +155,8 @@ class syntax_plugin_box2 extends DokuWiki_Syntax_Plugin {
                     break;
 
                 case 'box_close' :
-					if ( strlen( $this->_content_colours ) > 0 ) {
+					if ( $this->box_content ) {
+                        $this->box_content = false;
 	                    $renderer->doc .= "</div>\n";
 					}
 
@@ -192,12 +196,12 @@ class syntax_plugin_box2 extends DokuWiki_Syntax_Plugin {
               (\#([0-9a-fA-F]{3}|[0-9a-fA-F]{6}))|        #colorvalue
               (rgb\(([0-9]{1,3}%?,){2}[0-9]{1,3}%?\))     #rgb triplet
               )$/x', $token)) {
-                $styles['colour'][] = $token;
+            if (preg_match('/^#[A-Za-z0-9_-]+$/', $token)) {
+                $styles['id'] = substr($token, 1);
                 continue;
             }
             
-            if (preg_match('/^#[A-Za-z0-9_-]+$/', $token)) {
-                $styles['id'] = substr($token, 1);
+                $styles['colour'][] = $token;
                 continue;
             }
             
